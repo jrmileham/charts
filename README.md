@@ -16,5 +16,6 @@
 - 📲 Install chart: `helm install [release-name] [repo-name]/[chart-name] `
 
 ## Charts
-| Chart | Description | Notes |
-|-------|-------------|-------|
+| Chart      | Description                                        | Notes                                     |
+|------------|----------------------------------------------------|-------------------------------------------|
+| local-path | Persistent local storage with Kubernetes (k8s/k3s) | Customised version of Rancher's own chart |

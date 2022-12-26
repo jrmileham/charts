@@ -1,0 +1,67 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "local-path.fullname" . }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "local-path.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.deployment.replicaCount }}
+  selector:
+    matchLabels:
+      {{- include "local-path.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- include "local-path.selectorLabels" . | nindent 8 }}
+    spec:
+      {{- with .Values.deployment.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      priorityClassName: "system-node-critical"
+      serviceAccountName: {{ include "local-path.serviceAccountName" . }}
+      containers:
+        - name: {{ include "local-path.name" . }}
+          image: "rancher/local-path-provisioner:{{ .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.deployment.image.pullPolicy }}
+          command:
+          - local-path-provisioner
+          - --debug
+          - start
+          - --config
+          - /etc/config/config.json
+          - --service-account-name
+          - {{ template "local-path.serviceAccountName" . }}
+          - --provisioner-name
+          - {{ template "local-path.provisionerName" . }}
+          - --configmap-name
+          - {{ .Values.configMap.name }}
+          volumeMounts:
+          - name: config-volume
+            mountPath: /etc/config/
+          env:
+          - name: POD_NAMESPACE
+            valueFrom:
+              fieldRef:
+                fieldPath: metadata.namespace
+          {{- with .Values.deployment.resources }}
+          resources:
+            {{- toYaml .Values.deployment.resources | nindent 12 }}
+          {{- end }}
+      volumes:
+        - name: config-volume
+          configMap:
+            name: {{ .Values.configMap.name }}
+      {{- with .Values.deployment.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.deployment.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.deployment.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}

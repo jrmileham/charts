@@ -1,0 +1,12 @@
+Install: {{ .Chart.Name }}
+Release: {{ .Release.Name }}
+
+This chart provides  Rancher's local-path-provisioner: https://github.com/rancher/local-path-provisioner. 
+It's a customised version of Rancher's own chart for this provisioner.
+
+See values file for customisations
+
+To learn more about the release, try:
+
+  $ helm status {{ .Release.Name }}
+  $ helm get all {{ .Release.Name }}

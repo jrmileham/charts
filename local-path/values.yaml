@@ -1,0 +1,84 @@
+# Default values for local-path.
+# This is a YAML-formatted file.
+# You can customise the chart with editing the values here
+
+# The short name to use to give the application. The chart name is the default
+nameOverride: ""
+# The short name to use to give the application. The chart name is the default
+# We truncate at 63 chars because some Kubernetes name fields are limited to this (by the DNS naming spec).
+# - If nameOverride provided, use it instead of chart name, as shortName
+# ---
+# - If fullnameOverride provided by values, use it
+# - Otherwise if release name contains shortName, use release name
+# - Otherwise use: releaseName-shortName
+fullnameOverride: ""
+
+# Default data for the provisioner deployment
+deployment:
+  replicaCount: 1
+  image:
+    pullPolicy: IfNotPresent
+  imagePullSecrets: []
+  nodeSelector: {}
+  tolerations:
+      - key: "CriticalAddonsOnly"
+        operator: "Exists"
+      - key: "node-role.kubernetes.io/control-plane"
+        operator: "Exists"
+        effect: "NoSchedule"
+      - key: "node-role.kubernetes.io/master"
+        operator: "Exists"
+        effect: "NoSchedule"
+  affinity: {}
+  resources: {} # Allows you to impose resource limits
+  # The name of the storage provisioner, the default is "rancher.io/local-path".
+  # This name used as an identifier for selecting a storage provisioner. 
+  # It's referenced in the provision pod and in any storage class definitions
+  provisionerNameOverride: ""
+
+# Create Role bases access control objects
+rbac:
+  create: true
+serviceAccount:
+  # Specifies whether a service account should be created
+  create: true
+  # Annotations to add to the service account
+  annotations: {}
+  # The name of the service account to use.
+  # If not set and create is true, a name is generated using the fullname template
+  nameOverride: ""
+
+# A storage class created to go with provisioner
+storageClass:
+  create: true
+  # Name of storage class
+  nameOverride: ""
+  # If `isDefaultClass` set to true, make sure to prevent other storage classes from being default to prevent issues
+  isDefaultClass: false
+  reclaimPolicy: Delete
+  allowVolumeExpansion: true
+
+# The config map used by the storage provisioner.
+# Use `nodePathMap` or `sharedFileSystemPath` to specify where to store the data on the nodes. You can't use both 
+# options and `sharedFileSystemPath` will be used in preference
+configMap:
+  name: local-path-config
+  nodePathMap:
+    - node: DEFAULT_PATH_FOR_NON_LISTED_NODES
+      paths:
+      - /opt/local-path-provisioner
+  # If `sharedFileSystemPath` is given a value, `nodePathMap` then will be set to []
+  sharedFileSystemPath: ""
+  # Script used to provision a PVC
+  setup: |-
+    #!/bin/sh
+    set -eu
+    mkdir -m 0777 -p "$VOL_DIR"
+  # Script used to deprovision a PVC
+  teardown: |-
+    #!/bin/sh
+    set -eu
+    rm -rf "$VOL_DIR"
+  helperPod:
+    image: busybox
+    imagePullPolicy: IfNotPresent

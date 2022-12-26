@@ -1,0 +1,32 @@
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: {{ .Values.configMap.name }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+{{ include "local-path.labels" . | indent 4 }}
+data:
+  config.json: |-
+    {
+      {{- if .Values.configMap.sharedFileSystemPath }}
+      "sharedFileSystemPath": {{ .Values.configMap.sharedFileSystemPath | quote }}
+      "nodePathMap": []
+      {{- else }}
+      "nodePathMap": {{ .Values.configMap.nodePathMap | toPrettyJson | nindent 8 }}
+      {{- end }}
+    }
+  setup: |-
+    {{- .Values.configMap.setup | nindent 4 }}
+  teardown: |-
+    {{- .Values.configMap.teardown | nindent 4 }}
+  helperPod.yaml: |-
+    apiVersion: v1
+    kind: Pod
+    metadata:
+      name: helper-pod
+      namespace: {{ .Release.Namespace }}
+    spec:
+      containers:
+        - name: helper-pod
+          image: {{ .Values.configMap.helperPod.image }}
+          imagePullPolicy: {{ .Values.configMap.helperPod.imagePullPolicy }}
