@@ -1,0 +1,14 @@
+{{ if .Values.storageClass.create -}}
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: {{ default (include "local-path.name" .) .Values.storageClass.nameOverride }}
+  labels:
+{{ include "local-path.labels" . | indent 4 }}
+  annotations:
+    storageclass.kubernetes.io/is-default-class: "{{ .Values.storageClass.isDefaultClass }}"
+provisioner: {{ include "local-path.provisionerName" . | trim }}
+volumeBindingMode: WaitForFirstConsumer
+reclaimPolicy: {{ .Values.storageClass.reclaimPolicy }}
+allowVolumeExpansion: {{ .Values.storageClass.allowVolumeExpansion }}
+{{- end }}

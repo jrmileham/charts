@@ -11,10 +11,11 @@
 - See the [helm guide](https://helm.sh/docs/topics/charts/#the-chart-file-structure) for chart directory structure
 
 ## Commands
-- ✅ Add Repo: `helm repo add [repo-name] https://github.com/jrmileham/charts`
+- ✅ Add Repo: `helm repo add [repo-name] https://jrmileham.github.io/charts`
 - 📄 List charts: `helm search repo [repo-name]`
 - 📲 Install chart: `helm install [release-name] [repo-name]/[chart-name] `
 
 ## Charts
-| Chart | Description | Notes |
-|-------|-------------|-------|
+| Chart      | Description                                        | Notes                                     |
+|------------|----------------------------------------------------|-------------------------------------------|
+| local-path | Persistent local storage with Kubernetes (k8s/k3s) | Customised version of Rancher's own chart |
