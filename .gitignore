@@ -16,3 +16,4 @@
 
 # Packed filed
 *.tgz
+!/packages/*.tgz

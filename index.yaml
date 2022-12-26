@@ -1,3 +1,21 @@
 apiVersion: v1
-entries: {}
-generated: "2022-12-21T19:33:09.776921Z"
+entries:
+  local-path:
+  - apiVersion: v2
+    appVersion: v0.0.23
+    created: "2022-12-26T20:12:16.846477Z"
+    description: Use HostPath for persistent local storage with Kubernetes (k8s/k3s)
+    digest: b7881f314b654c9948254413286f50db2a1e79a64b499940777e66c91795d0e6
+    home: https://github.com/jrmileham/charts
+    keywords:
+    - storage
+    - hostpath
+    kubeVersion: '>=1.12.0'
+    name: local-path
+    sources:
+    - https://github.com/rancher/local-path-provisioner.git
+    type: application
+    urls:
+    - https://github.com/jrmileham/charts/packages/local-path-1.0.0.tgz
+    version: 1.0.0
+generated: "2022-12-26T20:12:16.844315Z"
