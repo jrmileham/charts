@@ -70,8 +70,8 @@ Create the name of the service account to use
 Create the name of the storage class provisioner, use override or rancher default
 */}}
 {{- define "local-path.provisionerName" -}}
-{{- if .Values.deployement.provisionerNameOverride -}}
-{{- printf .Values.deployement.provisionerNameOverride -}}
+{{- if .Values.deployment.provisionerNameOverride -}}
+{{- printf .Values.deployment.provisionerNameOverride -}}
 {{- else }}
 {{- printf "rancher.io/local-path" -}}
 {{- end }}
