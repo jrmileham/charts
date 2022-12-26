@@ -16,6 +16,6 @@ entries:
     - https://github.com/rancher/local-path-provisioner.git
     type: application
     urls:
-    - https://github.com/jrmileham/charts/packages/local-path-1.0.0.tgz
+    - https://jrmileham.github.io/charts/packages/local-path-1.0.0.tgz
     version: 1.0.0
 generated: "2022-12-26T20:12:16.844315Z"
