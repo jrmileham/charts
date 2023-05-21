@@ -36,6 +36,8 @@ deployment:
   # It's referenced in the provision pod and in any storage class definitions
   provisionerNameOverride: ""
   annotations: {}
+helperPod:
+  annotations: {}
 # Create Role bases access control objects
 rbac:
   create: true

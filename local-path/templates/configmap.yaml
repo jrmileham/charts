@@ -23,10 +23,14 @@ data:
     apiVersion: v1
     kind: Pod
     metadata:
-      name: helper-pod
+      name: {{ .Release.Name }}-helper-pod
       namespace: {{ .Release.Namespace }}
+      {{- with .Values.helperPod.annotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
     spec:
       containers:
-        - name: helper-pod
+        - name: {{ .Release.Name }}-helper-pod
           image: {{ .Values.configMap.helperPod.image }}
           imagePullPolicy: {{ .Values.configMap.helperPod.imagePullPolicy }}
