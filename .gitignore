@@ -14,6 +14,6 @@
 *.tmproj
 .vscode/
 
-# Packed filed
+# Packed files
 *.tgz
 !/packages/*.tgz
