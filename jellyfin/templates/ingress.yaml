@@ -9,6 +9,7 @@ metadata:
   {{- end }}
   labels:
     {{- include "jellyfin.labels" . | nindent 4 }}
+spec:
   rules:
   - host: {{ .Values.ingress.host }}
     http:

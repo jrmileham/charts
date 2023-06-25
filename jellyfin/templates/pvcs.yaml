@@ -2,7 +2,7 @@
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: {{ include "jellyfin.name" . }}-config
+  name: {{ include "jellyfin.name" . }}-data
   namespace: {{ .Release.Namespace }}
 spec:
   persistentVolumeReclaimPolicy: {{ .Values.storage.config.reclaimPolicy }}
