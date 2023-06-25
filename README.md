@@ -19,3 +19,4 @@
 | Chart      | Description                                        | Notes                                     |
 |------------|----------------------------------------------------|-------------------------------------------|
 | local-path | Persistent local storage with Kubernetes (k8s/k3s) | Customised version of Rancher's own chart |
+| jellyfin   | Jellyfin Media Server                              | None                                      |

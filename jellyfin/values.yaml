@@ -1,0 +1,80 @@
+# Default values for jellyfin.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+nameOverride: ""
+fullnameOverride: ""
+
+deployment:
+  replicaCount: 1
+  annotations: {}
+  podAnnotations: {}
+  imagePullSecrets: []
+  resources: {}
+    # limits:
+    #   cpu: 100m
+    #   memory: 128Mi
+    # requests:
+    #   cpu: 100m
+    #   memory: 128Mi
+  # TODO: extra volumemounts
+  # TODO: Extra envs
+  nodeSelector: {}
+  tolerations: []
+  affinity: {}
+  image:
+    repository: docker.io/jellyfin/jellyfin
+    pullPolicy: IfNotPresent
+    # Overrides the image tag whose default is the chart appVersion.
+    tag: ""
+
+storage:
+  config:
+    storageClass: ""
+    reclaimPolicy: Retain
+    size: 5Gi
+    accessModes:
+     - ReadWriteOnce
+  media:
+    storageClass: ""
+    reclaimPolicy: Retain
+    size: 10Gi
+    accessModes:
+     - ReadWriteOnce
+  transcodes:
+    storageClass: ""
+    reclaimPolicy: Retain
+    size: 10Gi
+    accessModes:
+     - ReadWriteOnce
+
+## TODO: look into this
+# podSecurityContext: {}
+#   # fsGroup: 2000
+
+# securityContext: {}
+  # capabilities:
+  #   drop:
+  #   - ALL
+  # readOnlyRootFilesystem: true
+  # runAsNonRoot: true
+  # runAsUser: 1000
+
+service:
+  type: ClusterIP
+  port: 80
+  annotations: []
+
+ingress:
+  enabled: false
+  className: ""
+  annotations: {}
+    # kubernetes.io/ingress.class: nginx
+    # kubernetes.io/tls-acme: "true"
+  host: jellyfin.localhost
+  path: /
+  pathType: Prefix
+  tls: []
+  #  - secretName: chart-example-tls
+  #    hosts:
+  #      - chart-example.local
