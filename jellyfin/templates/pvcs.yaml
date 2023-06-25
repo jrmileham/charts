@@ -1,0 +1,55 @@
+# JellyFin Data (Config & Cache) PVC
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ include "jellyfin.name" . }}-config
+  namespace: {{ .Release.Namespace }}
+spec:
+  persistentVolumeReclaimPolicy: {{ .Values.storage.config.reclaimPolicy }}
+  {{- with .Values.storage.config.accessModes }}
+  accessModes:
+   {{- toYaml . | nindent 4 }}
+  {{- end }}
+  resources:
+    requests:
+      storage: {{ .Values.storage.config.size }}
+    storageClassName: {{ .Values.storage.config.storageClass }}
+
+---
+
+# JellyFin Transcoding PVC
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ include "jellyfin.name" . }}-transcodes
+  namespace: {{ .Release.Namespace }}
+spec:
+  persistentVolumeReclaimPolicy: {{ .Values.storage.transcodes.reclaimPolicy }} 
+  {{- with .Values.storage.transcodes.accessModes }}
+  accessModes:
+   {{- toYaml . | nindent 4 }}
+  {{- end }}
+  resources:
+    requests:
+      storage: {{ .Values.storage.transcodes.size }}
+    storageClassName: {{ .Values.storage.transcodes.storageClass }}
+
+---
+# JellyFin media PVC
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ include "jellyfin.name" . }}-media
+  namespace: {{ .Release.Namespace }}
+spec:
+  # Don't delete the PVC/PV after the pod is gone, you can't set this in the storage class, only here
+  # https://kubernetes.io/docs/tasks/administer-cluster/change-pv-reclaim-policy/,
+  persistentVolumeReclaimPolicy: {{ .Values.storage.media.reclaimPolicy }} 
+  {{- with .Values.storage.media.accessModes }}
+  accessModes:
+   {{- toYaml . | nindent 4 }}
+  {{- end }}
+  resources:
+    requests:
+      storage: {{ .Values.storage.media.size }}
+    storageClassName: {{ .Values.storage.media.storageClass }}
