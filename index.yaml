@@ -3,6 +3,24 @@ entries:
   docker-registry:
   - apiVersion: v2
     appVersion: 2.8.2
+    created: "2023-07-01T21:36:14.888836+01:00"
+    description: Docker Registry V2
+    digest: 6f7d9906435585e7a6b536eaec99774afa382bdfd52616874dcb554f4a79c6d7
+    home: https://github.com/jrmileham/charts
+    keywords:
+    - containers
+    - registry
+    - docker
+    kubeVersion: '>=1.24.0'
+    name: docker-registry
+    sources:
+    - https://github.com/distribution/distribution
+    type: application
+    urls:
+    - https://jrmileham.github.io/charts/packages/docker-registry-1.0.1.tgz
+    version: 1.0.1
+  - apiVersion: v2
+    appVersion: 2.8.2
     created: "2023-07-01T20:23:21.445651+01:00"
     description: Docker Registry V2
     digest: 72e76c54513d945a947c5aa81189849ef83cce245b0a76c73ed1c71315cf4225
@@ -37,23 +55,6 @@ entries:
     urls:
     - https://jrmileham.github.io/charts/packages/jellyfin-1.0.0.tgz
     version: 1.0.0
-  - apiVersion: v2
-    appVersion: 10.8.10
-    created: "2023-07-01T20:23:21.447349+01:00"
-    description: A Helm chart for Kubernetes
-    digest: c2a44999bb57a319acc740a32e0bb45dbf5f46a0bff98984ff943b0bb73c255a
-    home: https://github.com/jrmileham/charts
-    keywords:
-    - jellyfin
-    - media server
-    kubeVersion: '>=1.12.0'
-    name: jellyfin
-    sources:
-    - https://github.com/jellyfin/jellyfin
-    type: application
-    urls:
-    - jellyfin-0.1.0.tgz
-    version: 0.1.0
   local-path:
   - apiVersion: v2
     appVersion: v0.0.24
@@ -106,4 +107,4 @@ entries:
     urls:
     - https://jrmileham.github.io/charts/packages/local-path-1.0.0.tgz
     version: 1.0.0
-generated: "2023-07-01T20:23:21.444732+01:00"
+generated: "2023-07-01T21:36:14.88802+01:00"
