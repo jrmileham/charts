@@ -1,0 +1,93 @@
+# Default values for docker-registry.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+nameOverride: ""
+fullnameOverride: ""
+storage:
+  enabled: true
+  storageClass: ""
+  reclaimPolicy: Retain
+  size: 15Gi
+  accessModes:
+    - ReadWriteOnce
+deployment:
+  replicaCount: 1
+  image:
+    repository: docker.io/registry
+    pullPolicy: IfNotPresent
+    # Overrides the image tag whose default is the chart appVersion.
+    tag: "2"
+    imagePullSecrets: []
+  podAnnotations: {}
+  annotations: {}
+  podSecurityContext: {}
+    # fsGroup: 2000
+  securityContext: {}
+    # capabilities:
+    #   drop:
+    #   - ALL
+    # readOnlyRootFilesystem: true
+    # runAsNonRoot: true
+    # runAsUser: 1000
+  resources: {}
+  # We usually recommend not to specify default resources and to leave this as a conscious
+  # choice for the user. This also increases chances charts run on environments with little
+  # resources, such as Minikube. If you do want to specify resources, uncomment the following
+  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+  # limits:
+  #   cpu: 100m
+  #   memory: 128Mi
+  # requests:
+  #   cpu: 100m
+  #   memory: 128Mi
+  nodeSelector: {}
+  tolerations: []
+  affinity: {}
+  extraVolumeMounts:
+  # If using custom CA 
+    # - name: cacerts
+    #   mountPath: /etc/ssl/certs/ca-cert-CLUSTER-CUSTOM.crt
+    #   readOnly: true
+    #   subPath: "ca_bundle.pem"
+  extraVolumes:
+  # If using custom CA 
+    # - name: cacerts
+    #   configMap:
+    #     defaultMode: 420
+    #     name: "ca_bundle_name_config_map"
+
+
+auth:
+  username: 'docker'
+  password: 'registry'
+  annotations: {}
+service:
+  type: ClusterIP
+  port: 5000
+  annotations: []
+
+# You need to set this secret up
+# example: chart-example-tls 
+tls_cert_secret_name: ''
+ingress:
+  enabled: false
+  annotations: {}
+    # kubernetes.io/ingress.class: nginx
+    # kubernetes.io/tls-acme: "true"
+    # Set max upload size, example for ingress-nginx:
+    # nginx.ingress.kubernetes.io/proxy-body-size: "0"
+    # nginx.ingress.kubernetes.io/proxy-read-timeout: "600"
+    # nginx.ingress.kubernetes.io/proxy-send-timeout: "600"
+    # nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
+  host: registry.localhost
+  path: /
+  pathType: Prefix
+  tls: []
+    #  - secretName: chart-example-tls
+    #    hosts:
+    #      - chart-example.local
+
+
+
+

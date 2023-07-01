@@ -16,7 +16,8 @@
 - 📲 Install chart: `helm install [release-name] [repo-name]/[chart-name] `
 
 ## Charts
-| Chart      | Description                                        | Notes                                     |
-|------------|----------------------------------------------------|-------------------------------------------|
-| local-path | Persistent local storage with Kubernetes (k8s/k3s) | Customised version of Rancher's own chart |
-| jellyfin   | Jellyfin Media Server                              | None                                      |
+| Chart             | Description                                        | Notes                                     |
+|-------------------|----------------------------------------------------|-------------------------------------------|
+| local-path        | Persistent local storage with Kubernetes (k8s/k3s) | Customised version of Rancher's own chart |
+| jellyfin          | Jellyfin Media Server                              | None                                      |
+| docker-registry   | Docker Registry                                    | None                                      |
