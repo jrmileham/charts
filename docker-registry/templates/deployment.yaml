@@ -1,0 +1,94 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "docker-registry.fullname" . }}
+  labels:
+    {{- include "docker-registry.labels" . | nindent 4 }}
+  {{- with .Values.deployment.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  replicas: {{ .Values.deployment.replicaCount }}
+  selector:
+    matchLabels:
+      {{- include "docker-registry.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      {{- with .Values.deployment.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "docker-registry.selectorLabels" . | nindent 8 }}
+    spec:
+      {{- with .Values.deployment.image.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.deployment.podSecurityContext }}
+      securityContext:
+        {{- toYaml .Values.deployment.podSecurityContext | nindent 8 }}
+      {{- end }}
+      containers:
+        - name: {{ .Chart.Name }}
+          image: "{{ .Values.deployment.image.repository }}:{{ .Values.deployment.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.deployment.image.pullPolicy }}
+          ports:
+            - name: registry
+              containerPort: {{ .Values.service.port }}
+              protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: /
+              port: {{ .Values.service.port }}
+              scheme: HTTPS
+          readinessProbe:
+            httpGet:
+              path: /
+              port: {{ .Values.service.port }}
+              scheme: HTTPS
+          {{- with .Values.deployment.resources }}
+          resources:
+            {{- toYaml .Values.deployment.resources | nindent 12 }}
+          {{- end }}
+          env:
+            - name: REGISTRY_HTTP_TLS_CERTIFICATE
+              value: "/certs/tls.crt"
+            - name: REGISTRY_HTTP_TLS_KEY
+              value: "/certs/tls.key"
+          volumeMounts:
+            - mountPath: /var/lib/registry
+              name: {{ include "docker-registry.name" . }}
+            - mountPath: /certs
+              name: certs
+            {{- with .Values.deployment.extraVolumeMounts }}
+              {{- toYaml . | nindent 12 }}
+            {{- end }}
+      {{- with .Values.deployment.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.deployment.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.deployment.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      volumes:
+        - name: {{ include "docker-registry.name" . }}
+          {{- if .Values.storage.enabled }}
+          persistentVolumeClaim:
+            claimName: {{ include "docker-registry.name" . }}
+          {{- else }}
+          emptyDir:
+            sizeLimit: 1Gi
+          {{- end }}
+        - name: certs
+          secret:
+            secretName: {{ .Values.tls_cert_secret_name }}
+        {{- with .Values.deployment.extraVolumes }}
+          {{- toYaml . | nindent 8 }}
+        {{- end }}

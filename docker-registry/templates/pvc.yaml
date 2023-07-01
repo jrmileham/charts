@@ -1,0 +1,19 @@
+{{ if .Values.storage.enabled }}
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ include "docker-registry.name" . }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "docker-registry.labels" . | nindent 4 }}
+spec:
+  persistentVolumeReclaimPolicy: {{ .Values.storage.reclaimPolicy }}
+  {{- with .Values.storage.accessModes }}
+  accessModes:
+   {{- toYaml . | nindent 4 }}
+  {{- end }}
+  resources:
+    requests:
+      storage: {{ .Values.storage.size }}
+    storageClassName: {{ .Values.storage.storageClass }}
+{{ end }}
