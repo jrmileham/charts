@@ -1,0 +1,14 @@
+apiVersion: v2
+name: docker-registry
+description:  Docker Registry V2
+type: application
+version: 1.0.0
+appVersion: "2.8.2"
+kubeVersion: ">=1.24.0"
+keywords:
+  - containers
+  - registry
+  - docker
+home: https://github.com/jrmileham/charts
+sources:
+  - https://github.com/distribution/distribution
